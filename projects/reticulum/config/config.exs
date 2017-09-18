@@ -9,6 +9,12 @@ use Mix.Config
 config :ret,
   ecto_repos: [Ret.Repo]
 
+config :phoenix, :format_encoders, "json-api": Posion
+
+config :mime, :types, %{
+  "application/vnd.api+json" => ["json-api"]
+}
+
 # Configures the endpoint
 config :ret, RetWeb.Endpoint,
   url: [host: "localhost"],
