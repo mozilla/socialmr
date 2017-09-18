@@ -11,6 +11,7 @@ defmodule RetWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug JaSerializer.Deserializer
   end
 
   scope "/", RetWeb do
@@ -19,8 +20,11 @@ defmodule RetWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", RetWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/login", RetWeb do
+    pipe_through :api
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
+  end
 end

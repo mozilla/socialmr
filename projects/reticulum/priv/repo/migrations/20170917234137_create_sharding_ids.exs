@@ -4,6 +4,7 @@ defmodule Ret.Repo.Migrations.CreateShardingIds do
 
   def up do
     execute("create schema ret0")
+    execute("create sequence ret0.table_id_seq")
     execute """
     CREATE OR REPLACE FUNCTION ret0.next_id(OUT result bigint) AS $$
     DECLARE
@@ -12,7 +13,7 @@ defmodule Ret.Repo.Migrations.CreateShardingIds do
     now_millis bigint;
     shard_id int := 0;
     BEGIN
-    SELECT nextval('ret0.table_id_seq') %% 1024 INTO seq_id;
+    SELECT nextval('ret0.table_id_seq') % 1024 INTO seq_id;
 
     SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
     result := (now_millis - our_epoch) << 23;
@@ -24,7 +25,6 @@ defmodule Ret.Repo.Migrations.CreateShardingIds do
   end
 
   def down do
-    execute "DROP FUNCTION ret0.next_id;"
-    execute "DROP SCHEMA ret0;"
+    execute "DROP SCHEMA ret0 CASCADE"
   end
 end

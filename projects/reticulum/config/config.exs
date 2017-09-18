@@ -14,8 +14,7 @@ config :ret, RetWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "txlMOtlaY5x3crvOCko4uV5PM29ul3zGo1oBGNO3cDXx+7GHLKqt0gR9qzgThxb5",
   render_errors: [view: RetWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Ret.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Ret.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -23,15 +22,8 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :ueberauth, Ueberauth,
-  base_path: "/api/v1/auth",
-  providers: [
-    google: { Ueberauth.Strategy.Google, [] },
-    identity: { Ueberauth.Strategy.Identity, [
-                  callback_methods: ["POST"],
-                  uid_field: :username,
-                  nickname_field: :username,
-                ] },
-  ]
+  base_path: "/api/login",
+  providers: [google: { Ueberauth.Strategy.Google, [] }]
 
 # Ueberauth Strategy Config for Google oauth
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
@@ -41,14 +33,12 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
 
 # Guardian configuration
 config :guardian, Guardian,
-  allowed_algos: ["HS512"], # optional
-  verify_module: Guardian.JWT,  # optional
-  issuer: "SocialAppApi",
+  issuer: "reticulum",
   ttl: { 30, :days },
   allowed_drift: 2000,
   verify_issuer: true, # optional
   secret_key: "JpWapNaJQ4HU1spmFCb5EyWxJAwKXiCl8677nd2GWYCurPYXYksMsHIV3J8zsYvN",
-  serializer: SocialAppApi.GuardianSerializer
+  serializer: Ret.GuardianSerializer
 
 config :ret, Ret.Repo,
   migration_source: "schema_migrations",
