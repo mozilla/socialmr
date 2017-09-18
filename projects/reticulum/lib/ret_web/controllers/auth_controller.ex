@@ -18,7 +18,7 @@ defmodule RetWeb.AuthController do
   end
 
   def perform_login(conn, nil, %Ueberauth.Auth{} = auth) do
-    user = User.auth_changeset(%User{}, auth, %{ auth_provider: "google" })
+    { :ok, user } = User.auth_changeset(%User{}, auth, %{ auth_provider: "google" })
     |> Repo.insert
 
     perform_login(conn, user, auth)
