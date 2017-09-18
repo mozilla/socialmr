@@ -25,8 +25,9 @@ defmodule RetWeb.AuthController do
   end
 
   def perform_login(conn, %User{} = user, %Ueberauth.Auth{} = _auth) do
-    conn = Guardian.Plug.api_sign_in(conn, user)
-    jwt = Guardian.Plug.current_token(conn)
+    jwt = conn
+    |> Guardian.Plug.api_sign_in(user)
+    |> Guardian.Plug.current_token
 
     conn
     |> put_resp_header("authorization", "Bearer #{jwt}")
