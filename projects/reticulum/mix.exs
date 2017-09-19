@@ -44,7 +44,9 @@ defmodule Ret.Mixfile do
       {:ueberauth, "~> 0.4"},
       {:ueberauth_google, "~> 0.6.0"},
       {:ja_serializer, "~> 0.12.0"},
-      {:guardian, "~> 0.14.5"}
+      {:guardian, "~> 0.14.5"},
+      {:distillery, "~> 1.5", runtime: false},
+      {:conform, "~> 2.5"}
     ]
   end
 

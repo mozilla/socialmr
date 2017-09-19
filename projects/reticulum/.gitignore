@@ -3,6 +3,7 @@
 /db
 /deps
 /*.ez
+_build
 
 # Generated on crash by the VM
 erl_crash.dump
@@ -27,3 +28,4 @@ npm-debug.log
 /config/*.secret.exs
 
 .env
+results/
