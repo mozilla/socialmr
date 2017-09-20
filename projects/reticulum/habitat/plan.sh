@@ -7,6 +7,7 @@ pkg_license=('MPL-2.0')
 
 pkg_deps=(
     core/coreutils
+    core/bash
     core/which
     core/erlang/20.0
 )
@@ -61,6 +62,9 @@ do_install() {
     mix release --env=prod
     cp -a _build/prod/rel/ret/* ${pkg_prefix}
     cp priv/bin/conform ${pkg_prefix}/bin
+
+    fix_interpreter ${pkg_prefix}/bin/ret_loader.sh core/coreutils bin/env
+    fix_interpreter ${pkg_prefix}/releases/${pkg_version}/ret.sh core/coreutils bin/env
 }
 
 do_strip() {

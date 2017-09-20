@@ -8,9 +8,8 @@ echo "Executing reticulum run hook"
 export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 export MIX_ENV=prod
 export PORT={{cfg.phx.port}}
+export RELEASE_CONFIG_DIR={{ pkg.svc_config_path }}
+export RELEASE_MUTABLE_DIR={{ pkg.svc_var_path }}
 
-# Needed because calling fix_interpreter corrupts escript files
-[[ ! -f /usr/bin/env ]] && ln -s "$(pkg_path_for coreutils)/bin/env" /usr/bin/env
-
-exec {{ pkg.path }}/bin/conform --conf {{ pkg.svc_config_path }}/ret.prod.conf --schema {{ pkg.svc_config_path }}/ret.schema.exs --config var/sys.config --output-dir var
+escript {{ pkg.path }}/bin/conform --conf {{ pkg.svc_config_path }}/ret.prod.conf --schema {{ pkg.svc_config_path }}/ret.schema.exs --config {{ pkg.path }}/releases/{{ pkg.version }}/sys.config --output-dir {{ pkg.svc_config_path }}
 exec {{ pkg.path }}/bin/ret foreground
