@@ -1,0 +1,9 @@
+#!{{ pkgPathFor "core/bash" }}/bin/bash
+
+set -e
+exec 2>&1
+
+echo "Executing reticulum run hook"
+
+export PORT={{cfg.phx.port}}
+#{{ pkg.svc_data_path }}

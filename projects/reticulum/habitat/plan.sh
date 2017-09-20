@@ -2,31 +2,68 @@ pkg_name=reticulum
 pkg_origin=mozillareality
 pkg_version="0.0.1"
 pkg_maintainer="Mozilla Mixed Reality <mixreality@mozilla.com>"
+pkg_upstream_url="http://github.com/mozilla/socialmr"
 pkg_license=('MPL-2.0')
-pkg_source="http://github.com/mozilla/socialmr/releases/${pkg_name}-${pkg_version}.tar.gz"
-# pkg_filename="${pkg_name}-${pkg_version}.tar.gz"
-# pkg_shasum="TODO"
-# pkg_deps=(core/glibc)
-pkg_build_deps=(core/elixir/1.5.0)
-# pkg_lib_dirs=(lib)
-# pkg_include_dirs=(include)
-# pkg_bin_dirs=(bin)
-# pkg_pconfig_dirs=(lib/pconfig)
-# pkg_svc_run="bin/haproxy -f $pkg_svc_config_path/haproxy.conf"
-# pkg_exports=(
-#   [host]=srv.address
-#   [port]=srv.port
-#   [ssl-port]=srv.ssl.port
-# )
-# pkg_exposes=(port ssl-port)
-# pkg_binds=(
-#   [database]="port host"
-# )
-# pkg_binds_optional=(
-#   [storage]="port host"
-# )
-# pkg_interpreters=(bin/bash)
-# pkg_svc_user="hab"
-# pkg_svc_group="$pkg_svc_user"
-# pkg_description="Some description."
-# pkg_upstream_url="http://example.com/project-name"
+
+pkg_deps=(core/glibc)
+
+pkg_build_deps=(
+    core/coreutils
+    core/git
+    core/yarn
+    core/node
+    core/erlang/20.0
+    core/elixir/1.5.0
+)
+
+pkg_exports=(
+   [port]=phx.port
+)
+pkg_binds=(
+   [database]="port host"
+)
+pkg_description="A moral imperative."
+
+do_verify() {
+    return 0
+}
+
+do_prepare() {
+    export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+    export MIX_ENV=prod
+
+    # Rebar3 will hate us otherwise because it looks for
+    # /usr/bin/env when it does some of its compiling
+    build_line "Setting link for /usr/bin/env to '$(pkg_path_for coreutils)/bin/env'"
+    [[ ! -f /usr/bin/env ]] && ln -s "$(pkg_path_for coreutils)/bin/env" /usr/bin/env
+
+    return 0
+}
+
+do_build() {
+    mix local.hex --force
+    mix local.rebar --force
+    mix deps.get --only prod
+    mix compile
+
+    cd assets
+    yarn install
+    ./node_modules/brunch/bin/brunch build -p
+    cd ..
+
+    mix phx.digest
+}
+
+do_install() {
+    mix release --env=prod
+    cp -a _build/prod/rel/ret/* ${pkg_prefix}
+    cp priv/bin/conform ${pkg_prefix}/bin
+}
+
+do_strip() {
+    return 0
+}
+
+do_end() {
+    return 0
+}

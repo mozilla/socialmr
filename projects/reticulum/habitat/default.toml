@@ -1,3 +1,19 @@
-# Use this file to templatize your application's native configuration files.
-# See the docs at https://www.habitat.sh/docs/create-packages-configure/.
-# You can safely delete this file if you don't need it.
+[phx]
+port = 4000
+secret_key = txlMOtlaY5x3crvOCko4uV5PM29ul3zGo1oBGNO3cDXx+7GHLKqt0gR9qzgThxb5
+
+[guardian]
+secret_key = txlMOtlaY5x3crvOCko4uV5PM29ul3zGo1oBGNO3cDXx+7GHLKqt0gR9qzgThxb5
+
+[oauth_google]
+client_id = foo
+client_secret = bar
+
+[db]
+username = postgres
+password = postgres
+hostname = localhost
+database = ret_dev
+template = template0
+pool_size = 16
+

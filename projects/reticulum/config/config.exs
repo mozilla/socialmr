@@ -48,7 +48,7 @@ config :guardian, Guardian,
 
 config :ret, Ret.Repo,
   migration_source: "schema_migrations",
-  after_connect: { Ret.Repo, :set_search_path, ["public, ret0"] },
+  after_connect: { Ret.Repo, :set_search_path, ["public, ret0"] }
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
