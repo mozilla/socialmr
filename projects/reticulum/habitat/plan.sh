@@ -8,6 +8,7 @@ pkg_license=('MPL-2.0')
 pkg_deps=(
     core/coreutils
     core/which
+    core/erlang/20.0
 )
 
 pkg_build_deps=(
@@ -37,7 +38,6 @@ do_prepare() {
 
     # Rebar3 will hate us otherwise because it looks for
     # /usr/bin/env when it does some of its compiling
-    build_line "Setting link for /usr/bin/env to '$(pkg_path_for coreutils)/bin/env'"
     [[ ! -f /usr/bin/env ]] && ln -s "$(pkg_path_for coreutils)/bin/env" /usr/bin/env
 
     return 0
@@ -61,9 +61,6 @@ do_install() {
     mix release --env=prod
     cp -a _build/prod/rel/ret/* ${pkg_prefix}
     cp priv/bin/conform ${pkg_prefix}/bin
-    fix_interpreter ${pkg_prefix}/bin/conform core/coreutils bin/env
-    fix_interpreter ${pkg_prefix}/bin/nodetool core/coreutils bin/env
-    fix_interpreter ${pkg_prefix}/bin/release_utils.escript core/coreutils bin/env
 }
 
 do_strip() {
