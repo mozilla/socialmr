@@ -5,5 +5,9 @@ exec 2>&1
 
 echo "Executing reticulum run hook"
 
+export LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export MIX_ENV=prod
 export PORT={{cfg.phx.port}}
-#{{ pkg.svc_data_path }}
+
+{{ pkg.path }}/bin/conform --conf {{ pkg.svc_config_path }}/ret.prod.conf --schema {{ pkg.svc_config_path }}/ret.schema.exs --config var/sys.config --output-dir var
+{{ pkg.path }}/bin/ret foreground

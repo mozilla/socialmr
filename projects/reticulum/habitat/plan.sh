@@ -5,7 +5,10 @@ pkg_maintainer="Mozilla Mixed Reality <mixreality@mozilla.com>"
 pkg_upstream_url="http://github.com/mozilla/socialmr"
 pkg_license=('MPL-2.0')
 
-pkg_deps=(core/glibc)
+pkg_deps=(
+    core/coreutils
+    core/which
+)
 
 pkg_build_deps=(
     core/coreutils
@@ -58,6 +61,9 @@ do_install() {
     mix release --env=prod
     cp -a _build/prod/rel/ret/* ${pkg_prefix}
     cp priv/bin/conform ${pkg_prefix}/bin
+    fix_interpreter ${pkg_prefix}/bin/conform core/coreutils bin/env
+    fix_interpreter ${pkg_prefix}/bin/nodetool core/coreutils bin/env
+    fix_interpreter ${pkg_prefix}/bin/release_utils.escript core/coreutils bin/env
 }
 
 do_strip() {
