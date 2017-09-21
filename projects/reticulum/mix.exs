@@ -45,7 +45,7 @@ defmodule Ret.Mixfile do
       {:ueberauth_google, "~> 0.6.0"},
       {:ja_serializer, "~> 0.12.0"},
       {:guardian, "~> 0.14.5"},
-      {:distillery, "~> 1.5", runtime: false},
+      {:distillery, "~> 1.5", runtime: false, github: "gfodor/distillery", branch: "feature/boot_opts"},
       {:conform, "~> 2.5"}
     ]
   end

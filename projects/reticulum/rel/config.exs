@@ -31,12 +31,14 @@ environment :dev do
   set dev_mode: true
   set include_erts: false
   set cookie: :"=!x&pbYZ[lT[2XdWU)=JWm9vC~,ym5U<6sUOAinLIIGF@!t1J/UY:es{Pok_0(Y@"
+  set boot_opts: [:no_dot_erlang]
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"!bv%`t^j]ZEXxL}x%,aHRe/N^{Wp$ipKnSh3M0WsXD[n=|c]qaTt8XfIpQvkxVKO"
+  set boot_opts: [:no_dot_erlang]
 end
 
 # You may define one or more releases in this file.
@@ -50,7 +52,6 @@ release :ret do
     :runtime_tools
   ]
   set commands: [
-    "migrate": "rel/commands/migrate.sh"
   ]
 end
 

@@ -63,8 +63,11 @@ do_install() {
     cp -a _build/prod/rel/ret/* ${pkg_prefix}
     cp priv/bin/conform ${pkg_prefix}/bin
 
-    fix_interpreter ${pkg_prefix}/bin/ret_loader.sh core/coreutils bin/env
-    fix_interpreter ${pkg_prefix}/releases/${pkg_version}/ret.sh core/coreutils bin/env
+    for f in $(find ${pkg_prefix} -name '*.sh')
+    do
+        fix_interpreter "$f" core/bash bin/bash
+        fix_interpreter "$f" core/coreutils bin/env
+    done
 }
 
 do_strip() {
