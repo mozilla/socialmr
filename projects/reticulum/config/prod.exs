@@ -68,3 +68,4 @@ import_config "prod.secret.exs"
 config :ret, Ret.Repo,
   adapter: Ecto.Adapters.Postgres
 
+config :peerage, via: Ret.PeerageProvider
