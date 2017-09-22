@@ -1,6 +1,7 @@
 pkg_name=libwebsockets
 pkg_origin=mozillareality
 pkg_maintainer="Mozilla Mixed Reality <mixreality@mozilla.com>"
+
 pkg_version="2.3.0"
 pkg_source="https://github.com/warmcat/libwebsockets/archive/v2.3.0.tar.gz"
 pkg_shasum="f08a8233ca1837640b72b1790cce741ce4b0feaaa6b408fe28a303cbf0408fa1"

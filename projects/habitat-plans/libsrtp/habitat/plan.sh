@@ -1,6 +1,7 @@
 pkg_name=libsrtp
 pkg_origin=mozillareality
 pkg_maintainer="Mozilla Mixed Reality <mixreality@mozilla.com>"
+
 pkg_version="1.6.0"
 pkg_source="https://github.com/cisco/libsrtp/archive/v1.6.0.zip"
 pkg_shasum="475ec7693435b54d966efc888b1aeba17cf28cd698793aba7c253174c37a31b5"
@@ -11,5 +12,9 @@ do_build() {
   ./configure  --prefix=/usr --enable-openssl 
   make clean
   make shared_library
-  make install
+}
+
+do_install() {
+  cd ../libsrtp-1.6.0
+  make install prefix=${pkg_prefix}
 }
