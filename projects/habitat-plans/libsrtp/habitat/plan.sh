@@ -9,12 +9,12 @@ pkg_build_deps=(core/make core/gcc core/openssl core/automake)
 
 do_build() {
   cd ../libsrtp-1.6.0
-  ./configure  --prefix=/usr --enable-openssl 
+  ./configure --prefix=${pkg_prefix} --enable-openssl 
   make clean
   make shared_library
 }
 
 do_install() {
   cd ../libsrtp-1.6.0
-  make install prefix=${pkg_prefix}
+  do_default_install
 }

@@ -22,12 +22,11 @@ pkg_include=(include)
 do_build() {
   cd ../usrsctp-0.9.4.0
   ./bootstrap
-  ./configure 
+  ./configure --prefix=${pkg_prefix}
   make
 }
 
 do_install() {
-  cp ../usrsctp-0.9.4.0/usrsctplib/usrsctp.h ${pkg_prefix}/include
-  cp ../usrsctp-0.9.4.0/usrsctplib/.libs/libusrsctp.a ${pkg_prefix}/lib
-  cp ../usrsctp-0.9.4.0/usrsctplib/.libs/libusrsctp.so ${pkg_prefix}/lib
+  cd ../usrsctp-0.9.4.0
+  do_default_install
 }
