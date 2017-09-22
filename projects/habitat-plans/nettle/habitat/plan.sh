@@ -8,7 +8,8 @@ pkg_upstream_url=https://www.lysator.liu.se/~nisse/nettle/
 pkg_source=https://ftp.gnu.org/gnu/${pkg_name}/${pkg_name}-${pkg_version}.tar.gz
 pkg_shasum=46942627d5d0ca11720fec18d81fc38f7ef837ea4197c1f630e71ce0d470b11e
 pkg_deps=(
-  core/glibc core/gmp
+  core/glibc
+  core/gmp/6.1.0 # core/coreutils conflict
 )
 pkg_build_deps=(
   core/gcc core/make core/m4

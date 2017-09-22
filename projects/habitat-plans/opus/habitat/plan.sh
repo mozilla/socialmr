@@ -1,4 +1,4 @@
-pkg_name=libopus
+pkg_name=opus
 pkg_origin=mozillareality
 pkg_maintainer="Mozilla Mixed Reality <mixreality@mozilla.com>"
 
@@ -12,14 +12,3 @@ pkg_lib_dirs=(lib)
 pkg_include_dirs=(include)
 pkg_description="Opus is a totally open, royalty-free, highly versatile audio codec."
 pkg_upstream_url="http://opus-codec.org/"
-
-do_build() {
-  cd ../opus-${pkg_version}
-  ./configure  --prefix=${pkg_prefix}
-  make
-}
-
-do_install() {
-  cd ../opus-${pkg_version}
-  do_default_install
-}

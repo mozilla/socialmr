@@ -23,6 +23,6 @@ pkg_deps=(
   mozillareality/usrsctp
   mozillareality/libmicrohttpd
   mozillareality/libwebsockets
-  mozillareality/libopus
+  mozillareality/opus
   mozillareality/gengetopt
 )

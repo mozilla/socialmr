@@ -11,9 +11,9 @@ pkg_source=https://www.gnupg.org/ftp/gcrypt/${pkg_name}/v3.5/${pkg_name}-${pkg_v
 pkg_shasum=79f5480ad198dad5bc78e075f4a40c4a315a1b2072666919d2d05a08aec13096
 pkg_deps=(
   core/glibc
-  core/gmp
+  core/gmp/6.1.0 # core/coreutils conflict
   core/libunistring
-  core/libidn2
+  mozillareality/libidn2
   mozillareality/nettle
   mozillareality/libtasn1
   mozillareality/unbound
