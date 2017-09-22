@@ -12,14 +12,19 @@ pkg_shasum=79f5480ad198dad5bc78e075f4a40c4a315a1b2072666919d2d05a08aec13096
 pkg_deps=(
   core/glibc
   core/gmp
+  core/libunistring
+  core/libidn2
   mozillareality/nettle
   mozillareality/libtasn1
-  core/libunistring core/libidn2
   mozillareality/unbound
 )
 pkg_build_deps=(
-  core/gcc core/make core/pkg-config
-  core/diffutils core/coreutils mozillareality/p11-kit
+  core/gcc
+  core/make
+  core/pkg-config
+  core/diffutils
+  core/coreutils
+  mozillareality/p11-kit
 )
 pkg_bin_dirs=(bin)
 pkg_include_dirs=(include include/gnutls)
