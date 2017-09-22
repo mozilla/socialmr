@@ -11,6 +11,8 @@ pkg_deps=(core/zlib)
 pkg_lib_dirs=(lib)
 pkg_bin_dirs=(bin)
 pkg_include_dirs=(include)
+pkg_description="This is the libwebsockets C library for lightweight websocket clients and servers."
+pkg_upstream_url="https://github.com/warmcat/libwebsockets"
 
 do_build() {
   mkdir build

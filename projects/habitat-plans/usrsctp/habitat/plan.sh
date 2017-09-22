@@ -18,15 +18,17 @@ pkg_build_deps=(
 
 pkg_lib_dirs=(lib)
 pkg_include=(include)
+pkg_description="A portable SCTP userland stack"
+pkg_upstream_url="https://github.com/sctplab/usrsctp"
 
 do_build() {
-  cd ../usrsctp-0.9.4.0
+  cd "../usrsctp-0.${pkg_version}"
   ./bootstrap
   ./configure --prefix=${pkg_prefix}
   make
 }
 
 do_install() {
-  cd ../usrsctp-0.9.4.0
+  cd "../usrsctp-0.${pkg_version}"
   do_default_install
 }
