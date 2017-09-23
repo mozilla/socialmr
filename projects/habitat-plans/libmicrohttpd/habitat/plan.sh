@@ -9,4 +9,5 @@ pkg_build_deps=(core/make core/gcc)
 pkg_license=('LGPL-2.1')
 pkg_description="GNU libmicrohttpd is a small C library that is supposed to make it easy to run an HTTP server as part of another application."
 pkg_upstream_url="https://www.gnu.org/software/libmicrohttpd/"
-
+pkg_lib_dirs=(lib)
+pkg_include_dirs=(include)

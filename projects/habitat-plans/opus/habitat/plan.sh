@@ -4,7 +4,7 @@ pkg_maintainer="Mozilla Mixed Reality <mixreality@mozilla.com>"
 
 pkg_version="1.2.1"
 pkg_license=('BSD')
-pkg_source="https://archive.mozilla.org/pub/opus/opus-1.2.1.tar.gz"
+pkg_source="https://archive.mozilla.org/pub/opus/opus-${pkg_version}.tar.gz"
 pkg_filename="${pkg_name}-${pkg_version}.tar.gz"
 pkg_shasum="cfafd339ccd9c5ef8d6ab15d7e1a412c054bf4cb4ecbbbcc78c12ef2def70732"
 pkg_build_deps=(core/make core/gcc)
