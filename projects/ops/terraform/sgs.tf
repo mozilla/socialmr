@@ -1,6 +1,6 @@
 resource "aws_security_group" "ret" {
   name = "ret"
-  vpc_id = "${aws_vpc.mr.id}"
+  vpc_id = "${aws_vpc.mod.id}"
 
   ingress {
     from_port = "${var.ret_http_port}"
