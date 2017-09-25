@@ -8,10 +8,10 @@ pkg_source="https://github.com/meetecho/janus-gateway/archive/v${pkg_version}.ta
 pkg_shasum="b1064036dcdaae804e9e76e58fa7ec639cfdf09c716ece32b5a0a459b48c2ba7"
 pkg_description="Janus is an open source, general purpose, WebRTC gateway"
 pkg_upstream_url="https://janus.conf.meetecho.com/"
-#pkg_exports=(webrtc-port sctp-transport-socket)
 pkg_bin_dirs=(bin)
 pkg_include_dirs=(include)
 pkg_lib_dirs=(lib)
+pkg_svc_run="janus --config=${pkg_svc_config_path}/janus.cfg"
 pkg_build_deps=(
   core/automake
   core/autoconf
@@ -22,7 +22,6 @@ pkg_build_deps=(
   core/libtool
   core/m4
   mozillareality/gnutls
-  mozillareality/p11-kit
   mozillareality/gengetopt
 )
 
@@ -36,6 +35,7 @@ pkg_deps=(
   mozillareality/libwebsockets
   mozillareality/opus
   mozillareality/libnice
+  mozillareality/p11-kit
 
   # https://github.com/habitat-sh/habitat/issues/3303
   core/zlib
@@ -60,6 +60,10 @@ do_build() {
 
   sh configure --prefix="$pkg_prefix"
 
-  echo "Package path: ${PKG_CONFIG_PATH}"
   make
+}
+
+do_install() {
+  do_default_install
+  mkdir -p "${pkg_path}/lib/janus/events"
 }
