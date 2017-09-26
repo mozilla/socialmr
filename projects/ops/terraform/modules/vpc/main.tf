@@ -1,16 +1,21 @@
 # Modified from https://charity.wtf/2016/04/14/scrapbag-of-useful-terraform-tips/
 
+variable "shared" { type = "map" }
+terraform { backend "s3" {} }
+provider "aws" { region = "${var.shared["region"]}", version = "~> 0.1" }
+data "aws_availability_zones" "all" {}
+
 resource "aws_vpc" "mod" {
   cidr_block = "${var.cidr}"
   tags { 
-    Name = "${var.env}_vpc"
+    Name = "${var.shared["env"]}_vpc"
   }
 }
 
 resource "aws_internet_gateway" "mod" {
   vpc_id = "${aws_vpc.mod.id}"
   tags { 
-    Name = "${var.env}_igw"
+    Name = "${var.shared["env"]}_igw"
   }
 }
 
@@ -22,20 +27,20 @@ resource "aws_internet_gateway" "mod" {
 resource "aws_subnet" "private" {
   vpc_id = "${aws_vpc.mod.id}"
   cidr_block = "${element(split(",", var.private_ranges), count.index)}"
-  availability_zone = "${element(split(",", var.azs), count.index)}"
+  availability_zone = "${element(split(",", var.shared["azs"]), count.index)}"
   count = "${length(compact(split(",", var.private_ranges)))}"
   tags { 
-    Name = "${var.env}_private_${count.index}"
+    Name = "${var.shared["env"]}_private_${count.index}"
   }
 }
 
 resource "aws_subnet" "public" {
   vpc_id = "${aws_vpc.mod.id}"
   cidr_block = "${element(split(",", var.public_ranges), count.index)}"
-  availability_zone = "${element(split(",", var.azs), count.index)}"
+  availability_zone = "${element(split(",", var.shared["azs"]), count.index)}"
   count = "${length(compact(split(",", var.public_ranges)))}"
   tags { 
-    Name = "${var.env}_public_${count.index}"
+    Name = "${var.shared["env"]}_public_${count.index}"
   }
   map_public_ip_on_launch = true
 }
@@ -46,7 +51,7 @@ resource "aws_subnet" "public" {
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.mod.id}"
   tags { 
-    Name = "${var.env}_public_subnet_route_table"
+    Name = "${var.shared["env"]}_public_subnet_route_table"
   }
 }
 
@@ -75,7 +80,7 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.mod.id}"
   count = "${length(compact(split(",", var.private_ranges)))}"
   tags {
-    Name = "${var.env}_private_subnet_route_table_${count.index}"
+    Name = "${var.shared["env"]}_private_subnet_route_table_${count.index}"
   }
 }
 
