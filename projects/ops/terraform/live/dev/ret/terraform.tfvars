@@ -1,6 +1,6 @@
 terragrunt = {
   terraform {
-    source = "git::git@github.com:mozilla/socialmr.git?ref=ops/provisioning//ops/terraform/modules/ret"
+    source = "git::git@github.com:mozilla/socialmr.git?ref=ops/provisioning//projects/ops/terraform/modules/ret"
   }
 
   include {
@@ -8,7 +8,7 @@ terragrunt = {
   }
 
   dependencies {
-    paths = ["../vpc"]
+    paths = ["../vpc", "../keys"]
   }
 }
 

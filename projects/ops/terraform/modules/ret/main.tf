@@ -15,6 +15,17 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data "terraform_remote_state" "keys" {
+  backend = "s3"
+  config = {
+    key = "keys/terraform.tfstate"
+    bucket = "${var.shared["state_bucket"]}"
+    region = "${var.shared["region"]}"
+    dynamodb_table = "${var.shared["dynamodb_table"]}"
+    encrypt = "true"
+  }
+}
+
 resource "aws_security_group" "ret-alb" {
   name = "${var.shared["env"]}-ret-alb"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
@@ -87,10 +98,23 @@ resource "aws_security_group" "ret" {
   }
 }
 
+resource "aws_iam_role" "ret" {
+  name = "${var.shared["env"]}-ret"
+  assume_role_policy = "${var.shared["ec2_role_policy"]}"
+}
+
+resource "aws_iam_instance_profile" "ret" {
+  name = "${var.shared["env"]}-ret"
+  role = "${aws_iam_role.ret.id}"
+}
+
 resource "aws_launch_configuration" "ret" {
   image_id = "ami-8edbf0ee"
   instance_type = "t2.micro"
   security_groups = ["${aws_security_group.ret.id}"]
+  key_name = "${data.terraform_remote_state.keys.mr_ssh_key_id}"
+  iam_instance_profile = "${aws_iam_instance_profile.ret.id}"
+  associate_public_ip_address = true
   lifecycle { create_before_destroy = true }
 }
 

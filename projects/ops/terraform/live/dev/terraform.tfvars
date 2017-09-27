@@ -28,4 +28,19 @@ shared = {
   azs = "us-west-1b,us-west-1c"
   state_bucket = "terraform-dev.gfodor"
   dynamodb_table = "terraform-dev-lock"
+  ec2_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
+    ]
+  }
+  EOF
 }

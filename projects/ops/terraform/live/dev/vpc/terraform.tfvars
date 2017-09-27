@@ -1,6 +1,6 @@
 terragrunt = {
   terraform {
-    source = "git::git@github.com:mozilla/socialmr.git?ref=ops/provisioning//ops/terraform/modules/vpc"
+    source = "git::git@github.com:mozilla/socialmr.git?ref=ops/provisioning//projects/ops/terraform/modules/vpc"
   }
 
   include {
