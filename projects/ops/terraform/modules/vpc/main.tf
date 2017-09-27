@@ -8,14 +8,14 @@ data "aws_availability_zones" "all" {}
 resource "aws_vpc" "mod" {
   cidr_block = "${var.cidr}"
   tags { 
-    Name = "${var.shared["env"]}_vpc"
+    Name = "${var.shared["env"]}-vpc"
   }
 }
 
 resource "aws_internet_gateway" "mod" {
   vpc_id = "${aws_vpc.mod.id}"
   tags { 
-    Name = "${var.shared["env"]}_igw"
+    Name = "${var.shared["env"]}-igw"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_subnet" "private" {
   availability_zone = "${element(split(",", var.shared["azs"]), count.index)}"
   count = "${length(compact(split(",", var.private_ranges)))}"
   tags { 
-    Name = "${var.shared["env"]}_private_${count.index}"
+    Name = "${var.shared["env"]}-private-${count.index}"
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_subnet" "public" {
   availability_zone = "${element(split(",", var.shared["azs"]), count.index)}"
   count = "${length(compact(split(",", var.public_ranges)))}"
   tags { 
-    Name = "${var.shared["env"]}_public_${count.index}"
+    Name = "${var.shared["env"]}-public-${count.index}"
   }
   map_public_ip_on_launch = true
 }
@@ -51,7 +51,7 @@ resource "aws_subnet" "public" {
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.mod.id}"
   tags { 
-    Name = "${var.shared["env"]}_public_subnet_route_table"
+    Name = "${var.shared["env"]}-public-subnet_route_table"
   }
 }
 
@@ -80,7 +80,7 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.mod.id}"
   count = "${length(compact(split(",", var.private_ranges)))}"
   tags {
-    Name = "${var.shared["env"]}_private_subnet_route_table_${count.index}"
+    Name = "${var.shared["env"]}-private-subnet_route_table_${count.index}"
   }
 }
 

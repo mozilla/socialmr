@@ -15,8 +15,68 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+resource "aws_security_group" "ret-alb" {
+  name = "${var.shared["env"]}-ret-alb"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+
+  ingress {
+    from_port = "80"
+    to_port = "80"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = "443"
+    to_port = "443"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_alb" "ret-alb" {
+  name = "${var.shared["env"]}-ret-alb"
+  security_groups = ["${aws_security_group.ret-alb.id}"]
+  subnets = ["${data.terraform_remote_state.vpc.public_subnet_ids}"]
+  
+  lifecycle { create_before_destroy = true }
+}
+
+resource "aws_alb_target_group" "ret-alb-group-http" {
+  name = "${var.shared["env"]}-ret-alb-group-http"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+  port = "${var.ret_http_port}"
+  protocol = "HTTP"
+
+  health_check {
+    path = "/health_check"
+  }
+}
+
+# TODO
+#data "aws_acm_certificate" "ret-alb-listener-cert" {
+#  domain = "reticulum.mozilla.com"
+#  statuses = ["ISSUED"]
+#}
+
+resource "aws_alb_listener" "ret-alb-listener" {
+  load_balancer_arn = "${aws_alb.ret-alb.arn}"
+  port = 443
+  protocol = "HTTP"
+
+  # TODO
+  # protocol = "HTTPS"
+  # ssl_policy = "ELBSecurityPolicy-2015-05"
+  # certificate_arn = "${aws_acm_certificate.ret-alb.listener-cert.arn}"
+  
+  default_action {
+    target_group_arn = "${aws_alb_target_group.ret-alb-group-http.arn}"
+    type = "forward"
+  }
+}
+
 resource "aws_security_group" "ret" {
-  name = "ret"
+  name = "${var.shared["env"]}-ret"
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   ingress {
@@ -31,19 +91,20 @@ resource "aws_launch_configuration" "ret" {
   image_id = "ami-8edbf0ee"
   instance_type = "t2.micro"
   security_groups = ["${aws_security_group.ret.id}"]
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_autoscaling_group" "ret" {
+  name = "${var.shared["env"]}-ret"
   launch_configuration = "${aws_launch_configuration.ret.id}"
   availability_zones = ["${data.aws_availability_zones.all.names}"]
   vpc_zone_identifier = ["${data.terraform_remote_state.vpc.public_subnet_ids}"]
 
-  min_size = 0
-  max_size = 0
+  min_size = "${var.min_ret_servers}"
+  max_size = "${var.max_ret_servers}"
 
-  tag {
-    key = "Name"
-    value = "ret"
-    propagate_at_launch = true
-  }
+  target_group_arns = ["${aws_alb_target_group.ret-alb-group-http.arn}"]
+
+  lifecycle { create_before_destroy = true }
+  tag { key = "Name", value = "${var.shared["env"]}-ret", propagate_at_launch = true }
 }
