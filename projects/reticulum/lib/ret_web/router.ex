@@ -21,7 +21,7 @@ defmodule RetWeb.Router do
   end
 
   scope "/api/login", RetWeb do
-    pipe_through :api
+    pipe_through [:api, :browser]
 
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
