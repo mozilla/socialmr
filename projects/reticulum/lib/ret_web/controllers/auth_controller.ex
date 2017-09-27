@@ -18,7 +18,6 @@ defmodule RetWeb.AuthController do
   end
 
   def callback(%{ assigns: %{ ueberauth_auth: auth }} = conn, params) do
-    IO.inspect params
     perform_login(conn, Repo.get_by(User, email: auth.info.email), auth)
   end
 

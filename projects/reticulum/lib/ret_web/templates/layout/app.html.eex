@@ -7,20 +7,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Rumbl!</title>
+    <title>Hello Ret!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
     <div class="container">
-      <div class="header">
-        <ol class="breadcrumb text-right">
-          <%= if @current_user do %>
-            <li><%= @current_user.name %></li>
-          <% end %>
-        </ol>
+      <header class="header">
+        <nav role="navigation">
+          <ul class="nav nav-pills pull-right">
+            <%= if @current_user do %>
+              <li><%= @current_user.name %></li>
+            <% end %>
+          </ul>
+        </nav>
         <span class="logo"></span>
-      </div>
+      </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
@@ -30,7 +32,6 @@
       </main>
 
     </div> <!-- /container -->
-    <script>window.userToken = "<%= assigns[:user_token] %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
