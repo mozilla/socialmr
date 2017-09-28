@@ -9,13 +9,19 @@ defmodule RetWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :browser_auth do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug Ret.Plug.Session
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
     plug JaSerializer.Deserializer
   end
 
   scope "/", RetWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :browser_auth]
 
     get "/", PageController, :index
   end
