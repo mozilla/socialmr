@@ -5,8 +5,17 @@ defmodule RetWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
-    plug :protect_from_forgery
     plug :put_secure_browser_headers
+  end
+
+  pipeline :csrf_check do
+    plug :protect_from_forgery
+  end
+
+  pipeline :browser_auth do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug Ret.Plug.Session
   end
 
   pipeline :api do
@@ -15,13 +24,13 @@ defmodule RetWeb.Router do
   end
 
   scope "/", RetWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :csrf_check, :browser_auth]
 
     get "/", PageController, :index
   end
 
   scope "/api/login", RetWeb do
-    pipe_through :api
+    pipe_through [:api, :browser]
 
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback

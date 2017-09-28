@@ -16,7 +16,10 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <%= if @current_user do %>
+              <script>window.username = "<%= @current_user.email %>"</script>
+              <li><%= @current_user.email %></li>
+            <% end %>
           </ul>
         </nav>
         <span class="logo"></span>
