@@ -1,5 +1,4 @@
 # socialmr
 Social MR
 
-
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/mozilla/socialmr.svg?columns=all)](http://waffle.io/mozilla/socialmr)
+Head over to the [mozilla/mr-social-client](https://github.com/mozilla/mr-social-client) repo. That's were most of the activity is happening. 
